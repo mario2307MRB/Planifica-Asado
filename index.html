@@ -115,7 +115,7 @@
             box-shadow: 0 0 0 3px rgba(0, 51, 160, 0.2);
         }
 
-        .protein-options {
+        .options-box {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
@@ -124,7 +124,7 @@
             border-radius: 8px;
         }
         
-        .protein-option {
+        .option-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -132,7 +132,7 @@
             min-width: 100px;
         }
         
-        .protein-option label {
+        .option-item label {
             margin-bottom: 0;
             font-weight: 500;
         }
@@ -354,20 +354,52 @@
                     </label>
                     <input type="number" id="big-children" min="0" placeholder="Ej: 1">
                 </div>
+
                  <div class="form-group">
                     <label>Selecciona las Proteínas</label>
-                    <div class="protein-options">
-                        <div class="protein-option">
+                    <div class="options-box">
+                        <div class="option-item">
                             <input type="checkbox" id="include-beef" checked>
                             <label for="include-beef">Vacuno</label>
                         </div>
-                        <div class="protein-option">
+                        <div class="option-item">
                             <input type="checkbox" id="include-chicken" checked>
                             <label for="include-chicken">Pollo</label>
                         </div>
-                        <div class="protein-option">
+                        <div class="option-item">
                             <input type="checkbox" id="include-pork" checked>
                             <label for="include-pork">Cerdo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="drinking-adults">
+                        <span>Adultos que beben alcohol</span>
+                        <span class="tooltip-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                            <span class="tooltip-text">Ingresa cuántos adultos consumirán alcohol. El cálculo se basará en este número.</span>
+                        </span>
+                    </label>
+                    <input type="number" id="drinking-adults" min="0" placeholder="Ej: 3">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span>Selecciona el tipo de alcohol</span>
+                        <span class="tooltip-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                            <span class="tooltip-text">Calculado para los adultos que beben. Vino: 1 botella (750cc) por cada 5. Cerveza: 3 latas (355cc) por persona. Si eliges solo un tipo, la cantidad se aumenta para compensar.</span>
+                        </span>
+                    </label>
+                    <div class="options-box">
+                        <div class="option-item">
+                            <input type="checkbox" id="include-wine" checked>
+                            <label for="include-wine">Vino</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" id="include-beer" checked>
+                            <label for="include-beer">Cerveza</label>
                         </div>
                     </div>
                 </div>
@@ -381,17 +413,6 @@
                         </span>
                     </label>
                     <input type="number" id="vegetarians" min="0" placeholder="Ej: 1">
-                </div>
-
-                <div class="form-group">
-                    <label for="drinking-adults">
-                        <span>¿Cuántos adultos beben?</span>
-                         <span class="tooltip-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
-                            <span class="tooltip-text">Vino: 1 botella (750cc) por cada 5 personas. Cerveza: 3 latas (355cc) por persona.</span>
-                        </span>
-                    </label>
-                    <input type="number" id="drinking-adults" min="0" placeholder="Ej: 4">
                 </div>
                 
                 <p id="error-message"></p>
@@ -428,7 +449,7 @@
     <script>
         // --- CONSTANTES DE PORCIONES ---
         const PORTIONS = {
-            adult: { totalProtein: 350, chorizo: 1.5, vienesa: 1, bread: 1, wine: 150, beer: 1065, soda: 500, water: 500 },
+            adult: { totalProtein: 350, chorizo: 1.5, vienesa: 1, bread: 1, soda: 500, water: 500 },
             bigChild: { totalProtein: 225, chorizo: 1, vienesa: 1, bread: 1, soda: 500, water: 500 },
             smallChild: { totalProtein: 125, chorizo: 1, vienesa: 1, bread: 1, soda: 300, water: 300 },
             veg: { burger: 2, sausage: 1.5 },
@@ -445,6 +466,8 @@
         const beefCheckbox = document.getElementById('include-beef');
         const chickenCheckbox = document.getElementById('include-chicken');
         const porkCheckbox = document.getElementById('include-pork');
+        const wineCheckbox = document.getElementById('include-wine');
+        const beerCheckbox = document.getElementById('include-beer');
         const errorMessage = document.getElementById('error-message');
         const resultsPlaceholder = document.getElementById('results-placeholder');
         const resultsContainer = document.getElementById('results-container');
@@ -479,14 +502,14 @@
             const drinkingAdults = parseInt(drinkingAdultsInput.value, 10) || 0;
             const totalPeople = adults + children;
 
-            if (vegetarians > totalPeople) {
-                showError('El nº de vegetarianos no puede exceder el total de invitados.');
+            if (drinkingAdults > adults) {
+                showError('El nº de adultos que beben no puede exceder el total de adultos.');
                 resultsContainer.classList.add('hidden');
                 resultsPlaceholder.classList.remove('hidden');
                 return;
             }
-            if (drinkingAdults > adults) {
-                showError('El nº de bebedores no puede exceder el total de adultos.');
+            if (vegetarians > totalPeople) {
+                showError('El nº de vegetarianos no puede exceder el total de invitados.');
                 resultsContainer.classList.add('hidden');
                 resultsPlaceholder.classList.remove('hidden');
                 return;
@@ -516,13 +539,11 @@
             const selectedProteinsCount = [beefCheckbox, chickenCheckbox, porkCheckbox].filter(cb => cb.checked).length;
             
             if (selectedProteinsCount > 0) {
-                // Primero, calcular el total de gramos de proteína necesarios para todos los comensales.
                 const totalProteinNeeded = 
                     (meatEatingAdults * PORTIONS.adult.totalProtein) +
                     (meatEatingBigChildren * PORTIONS.bigChild.totalProtein) +
                     (meatEatingSmallChildren * PORTIONS.smallChild.totalProtein);
 
-                // Luego, dividir ese total entre los tipos de proteína seleccionados.
                 const proteinPerTypeInGrams = totalProteinNeeded / selectedProteinsCount;
                 const proteinPerTypeInKg = proteinPerTypeInGrams / 1000;
 
@@ -537,16 +558,24 @@
                 }
             }
 
-
             let coalKg = totalPeople * PORTIONS.group.coal / 1000;
             if (coalKg > 0) {
                 coalKg = Math.max(coalKg, 3);
             }
             
+            // Lógica de Bebidas con compensación
+            const isOnlyWine = wineCheckbox.checked && !beerCheckbox.checked;
+            const isOnlyBeer = beerCheckbox.checked && !wineCheckbox.checked;
+            const beverageAdults = (isOnlyWine || isOnlyBeer) ? drinkingAdults * 1.25 : drinkingAdults;
+            
             let wineBottles = 0;
-            if (drinkingAdults > 0) {
-                // 1 botella por cada 5 personas, mínimo 1
-                wineBottles = Math.ceil(drinkingAdults / 5);
+            if (wineCheckbox.checked && drinkingAdults > 0) {
+                wineBottles = Math.ceil(beverageAdults / 5);
+            }
+
+            let beerCans = 0;
+            if (beerCheckbox.checked && drinkingAdults > 0) {
+                beerCans = Math.ceil(beverageAdults * 3);
             }
 
             const items = [
@@ -558,7 +587,7 @@
                 { name: 'Pan', quantity: getPracticalQuantity(totalPeople * PORTIONS.adult.bread, 'unidades'), unit: 'unidades' },
                 { name: 'Carbón', quantity: getPracticalQuantity(coalKg, 'kg'), unit: 'kg' },
                 { name: 'Vino (botellas 750cc)', quantity: getPracticalQuantity(wineBottles, 'botellas'), unit: 'botellas' },
-                { name: 'Cerveza (latas 355cc)', quantity: getPracticalQuantity((drinkingAdults * 3), 'unidades'), unit: 'unidades' },
+                { name: 'Cerveza (latas 355cc)', quantity: getPracticalQuantity(beerCans, 'unidades'), unit: 'unidades' },
                 { name: 'Bebidas Gaseosas', quantity: getPracticalQuantity(((adults * PORTIONS.adult.soda) + (bigChildren * PORTIONS.bigChild.soda) + (smallChildren * PORTIONS.smallChild.soda)) / 1000, 'L'), unit: 'L' },
                 { name: 'Agua', quantity: getPracticalQuantity(((adults * PORTIONS.adult.water) + (bigChildren * PORTIONS.bigChild.water) + (smallChildren * PORTIONS.smallChild.water)) / 1000, 'L'), unit: 'L' },
             ];
@@ -599,6 +628,8 @@
             beefCheckbox.checked = true;
             chickenCheckbox.checked = true;
             porkCheckbox.checked = true;
+            wineCheckbox.checked = true;
+            beerCheckbox.checked = true;
             recalculate();
         };
 
@@ -625,6 +656,9 @@
             currentShoppingList.forEach(item => {
                 listText += `- ${item.name}: ${formatQuantity(item.quantity)} ${item.unit}\n`;
             });
+
+            listText += "\n¡Recuerda llevar sal parrillera, preparar pebre y si vas a beber NO conduzcas!";
+            
             return listText;
         };
 
@@ -660,7 +694,7 @@
         };
 
         // --- ASIGNACIÓN DE EVENT LISTENERS ---
-        [adultsInput, smallChildrenInput, bigChildrenInput, vegetariansInput, drinkingAdultsInput, beefCheckbox, chickenCheckbox, porkCheckbox].forEach(input => {
+        [adultsInput, smallChildrenInput, bigChildrenInput, vegetariansInput, drinkingAdultsInput, beefCheckbox, chickenCheckbox, porkCheckbox, wineCheckbox, beerCheckbox].forEach(input => {
             input.addEventListener('input', recalculate);
         });
         resetButton.addEventListener('click', handleReset);
