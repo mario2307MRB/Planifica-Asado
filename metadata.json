@@ -1,0 +1,5 @@
+{
+  "name": "Calculadora de Asado Dieciochero",
+  "description": "Una aplicación en un solo archivo HTML para calcular las cantidades de comida y bebida necesarias para un asado dieciochero chileno.",
+  "requestFramePermissions": []
+}

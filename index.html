@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Asado Dieciochero</title>
+    <style>
+        /* Estilos Generales y de Diseño */
+        :root {
+            --blue: #0033A0;
+            --red: #D52B1E;
+            --white: #FFFFFF;
+            --green: #25D366; /* Color para el botón de compartir */
+            --light-gray: #f4f4f7;
+            --gray: #6b7280;
+            --dark-gray: #374151;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        /* Contenedor principal de la aplicación */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+        
+        /* Panel izquierdo - Formulario de cálculo */
+        .form-panel {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        /* Panel derecho - Resultados */
+        .results-panel {
+            padding: 2rem;
+            background-color: var(--light-gray);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        header h1 {
+            color: var(--blue);
+            font-size: 1.75rem;
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        header p {
+            color: var(--gray);
+        }
+        
+        /* Estilos del formulario */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(0, 51, 160, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        button:not(:disabled):hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        #reset-btn { background-color: var(--gray); }
+        #reset-btn:hover { background-color: #5a616d; }
+        
+        /* Footer Credit Style */
+        .credit {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .credit p {
+            margin: 0;
+        }
+
+        /* Contenedor para los botones de acción de resultados */
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        #share-btn { background-color: var(--green); }
+        #share-btn:hover { background-color: #1EAE54; }
+
+
+        #error-message {
+            color: var(--red);
+            font-weight: 600;
+            min-height: 1.2em;
+            margin-top: 1rem;
+        }
+        
+        /* Estilos de la sección de resultados */
+        #results-placeholder {
+            text-align: center;
+            color: var(--gray);
+            border: 2px dashed #ccc;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        
+        #results-container.hidden, #results-placeholder.hidden {
+            display: none;
+        }
+        
+        #results-container h2 {
+            text-align: center;
+            color: var(--dark-gray);
+            margin-top: 0;
+        }
+        
+        #results-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #results-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        #results-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-quantity {
+            font-weight: 700;
+            color: var(--blue);
+            font-size: 1.1rem;
+        }
+
+        .item-quantity .unit {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Estilos para Tooltips de Información */
+        .tooltip-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: help;
+        }
+
+        .tooltip-container .tooltip-text {
+            visibility: hidden;
+            width: max-content;
+            max-width: 250px;
+            background-color: var(--dark-gray);
+            color: var(--white);
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Spinner for loading state */
+        .spinner {
+            animation: rotate 2s linear infinite;
+            width: 20px;
+            height: 20px;
+        }
+        .spinner .path {
+            stroke: #FFFFFF;
+            stroke-linecap: round;
+            animation: dash 1.5s ease-in-out infinite;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes dash {
+            0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+            50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+            100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+        }
+        
+        /* Estilos de impresión */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-area, #printable-area * {
+                visibility: visible;
+            }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <section class="form-panel">
+            <header>
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M19 16V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v10"/><path d="M5 20v-4"/><path d="M19 20v-4"/><path d="M12 4V2"/><path d="M12 16v-4"/><path d="M8 12h8"/></svg>
+                    Calculadora de Asado
+                </h1>
+                <p>Planifica tu asado perfecto</p>
+            </header>
+
+            <form id="calculator-form" novalidate>
+                <div class="form-group">
+                    <label for="adults">
+                        <span>Número de Adultos</span>
+                        <span class="tooltip-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                            <span class="tooltip-text">Carne: 300g, Pollo: 200g, Chorizo: 1.5, Pan: 1, Bebidas: 500ml, Agua: 500ml</span>
+                        </span>
+                    </label>
+                    <input type="number" id="adults" min="0" placeholder="Ej: 5">
+                </div>
+
+                <div class="form-group">
+                    <label for="children">
+                        <span>Número de Niños</span>
+                         <span class="tooltip-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                            <span class="tooltip-text">Carne: 150g, Pollo: 125g, Chorizo: 1, Pan: 1, Bebidas: 625ml, Agua: 750ml</span>
+                        </span>
+                    </label>
+                    <input type="number" id="children" min="0" placeholder="Ej: 2">
+                </div>
+
+                <div class="form-group">
+                    <label for="vegetarians">
+                        <span>Vegetarianos/Veganos</span>
+                         <span class="tooltip-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                            <span class="tooltip-text">Opciones Veg: 2 Hamburguesas y 1.5 Chorizos por persona.</span>
+                        </span>
+                    </label>
+                    <input type="number" id="vegetarians" min="0" placeholder="Ej: 1">
+                </div>
+
+                <div class="form-group">
+                    <label for="drinking-adults">
+                        <span>¿Cuántos adultos beben?</span>
+                         <span class="tooltip-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                            <span class="tooltip-text">Vino: 150ml, Cerveza: 3 latas de 355cc por persona.</span>
+                        </span>
+                    </label>
+                    <input type="number" id="drinking-adults" min="0" placeholder="Ej: 4">
+                </div>
+                
+                <p id="error-message"></p>
+
+                <div class="button-group">
+                    <button type="button" id="reset-btn">Limpiar</button>
+                </div>
+            </form>
+
+            <footer class="credit">
+                <p>Creado por Mario Reyes B. <br>Copiapó - Atacama - Chile</p>
+            </footer>
+        </section>
+
+        <section class="results-panel">
+            <div id="results-placeholder">
+                <p>Tu lista de compras aparecerá aquí.</p>
+            </div>
+            <div id="results-container" class="hidden">
+                <div id="printable-area">
+                    <h2>Lista de Compras</h2>
+                    <ul id="results-list"></ul>
+                </div>
+                <div class="results-actions">
+                    <button type="button" id="share-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                        Compartir Lista
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        // --- CONSTANTES DE PORCIONES ---
+        const PORTIONS = {
+            adult: { beef: 300, chicken: 200, chorizo: 1.5, bread: 1, wine: 150, beer: 1065, soda: 500, water: 500 }, // beer: 3 * 355ml
+            child: { beef: 150, chicken: 125, chorizo: 1, bread: 1, soda: 625, water: 750 },
+            veg: { burger: 2, sausage: 1.5 },
+            group: { coal: 250 },
+        };
+
+        // --- SELECCIÓN DE ELEMENTOS DEL DOM ---
+        const form = document.getElementById('calculator-form');
+        const adultsInput = document.getElementById('adults');
+        const childrenInput = document.getElementById('children');
+        const vegetariansInput = document.getElementById('vegetarians');
+        const drinkingAdultsInput = document.getElementById('drinking-adults');
+        const errorMessage = document.getElementById('error-message');
+        const resultsPlaceholder = document.getElementById('results-placeholder');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsList = document.getElementById('results-list');
+        const resetButton = document.getElementById('reset-btn');
+        const shareButton = document.getElementById('share-btn');
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let currentShoppingList = [];
+
+        // --- LÓGICA DE LA APLICACIÓN ---
+        const getPracticalQuantity = (quantity, unit) => {
+            if (quantity <= 0) return 0;
+            switch (unit) {
+                case 'kg':
+                case 'L':
+                    return Math.ceil(quantity * 2) / 2; // Redondear hacia arriba al siguiente 0.5
+                case 'unidades':
+                    return Math.ceil(quantity); // Redondear hacia arriba a la siguiente unidad entera
+                default:
+                    return quantity;
+            }
+        };
+
+        const recalculate = () => {
+            const adults = parseInt(adultsInput.value, 10) || 0;
+            const children = parseInt(childrenInput.value, 10) || 0;
+            const vegetarians = parseInt(vegetariansInput.value, 10) || 0;
+            const drinkingAdults = parseInt(drinkingAdultsInput.value, 10) || 0;
+            const totalPeople = adults + children;
+
+            if (vegetarians > totalPeople) {
+                showError('El nº de vegetarianos no puede exceder el total de invitados.');
+                resultsContainer.classList.add('hidden');
+                resultsPlaceholder.classList.remove('hidden');
+                return;
+            }
+            if (drinkingAdults > adults) {
+                showError('El nº de bebedores no puede exceder el total de adultos.');
+                resultsContainer.classList.add('hidden');
+                resultsPlaceholder.classList.remove('hidden');
+                return;
+            }
+            if (totalPeople === 0 && vegetarians === 0) {
+                clearError();
+                resultsContainer.classList.add('hidden');
+                resultsPlaceholder.classList.remove('hidden');
+                currentShoppingList = [];
+                return;
+            }
+            clearError();
+
+            const vegFromAdults = Math.min(adults, vegetarians);
+            const vegFromChildren = Math.min(children, vegetarians - vegFromAdults);
+            const meatEatingAdults = adults - vegFromAdults;
+            const meatEatingChildren = children - vegFromChildren;
+
+            let coalKg = totalPeople * PORTIONS.group.coal / 1000;
+            if (coalKg > 0) {
+                coalKg = Math.max(coalKg, 3);
+            }
+
+            let wineL = drinkingAdults * PORTIONS.adult.wine / 1000;
+            if (wineL > 0) {
+                wineL = Math.max(wineL, 0.75); // Mínimo 750cc (1 botella)
+            }
+
+            const items = [
+                { name: 'Carne de Vacuno', quantity: getPracticalQuantity((meatEatingAdults * PORTIONS.adult.beef + meatEatingChildren * PORTIONS.child.beef) / 1000, 'kg'), unit: 'kg' },
+                { name: 'Pollo', quantity: getPracticalQuantity((meatEatingAdults * PORTIONS.adult.chicken + meatEatingChildren * PORTIONS.child.chicken) / 1000, 'kg'), unit: 'kg' },
+                { name: 'Chorizos', quantity: getPracticalQuantity(meatEatingAdults * PORTIONS.adult.chorizo + meatEatingChildren * PORTIONS.child.chorizo, 'unidades'), unit: 'unidades' },
+                { name: 'Hamburguesas Veg.', quantity: getPracticalQuantity(vegetarians * PORTIONS.veg.burger, 'unidades'), unit: 'unidades' },
+                { name: 'Chorizos Veg.', quantity: getPracticalQuantity(vegetarians * PORTIONS.veg.sausage, 'unidades'), unit: 'unidades' },
+                { name: 'Pan', quantity: getPracticalQuantity(totalPeople * PORTIONS.adult.bread, 'unidades'), unit: 'unidades' },
+                { name: 'Carbón', quantity: getPracticalQuantity(coalKg, 'kg'), unit: 'kg' },
+                { name: 'Vino', quantity: getPracticalQuantity(wineL, 'L'), unit: 'L' },
+                { name: 'Cerveza (latas 355cc)', quantity: getPracticalQuantity((drinkingAdults * PORTIONS.adult.beer) / 355, 'unidades'), unit: 'unidades' },
+                { name: 'Bebidas Gaseosas', quantity: getPracticalQuantity((adults * PORTIONS.adult.soda + children * PORTIONS.child.soda) / 1000, 'L'), unit: 'L' },
+                { name: 'Agua', quantity: getPracticalQuantity((adults * PORTIONS.adult.water + children * PORTIONS.child.water) / 1000, 'L'), unit: 'L' },
+            ];
+            
+            currentShoppingList = items.filter(item => item.quantity > 0);
+            displayResults(currentShoppingList);
+        };
+        
+        const displayResults = (itemsToDisplay) => {
+            resultsList.innerHTML = '';
+
+            if (itemsToDisplay.length === 0) {
+                resultsList.innerHTML = '<li>Ajusta los invitados para ver la lista.</li>';
+            } else {
+                itemsToDisplay.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-quantity">${formatQuantity(item.quantity)} <span class="unit">${item.unit}</span></span>
+                    `;
+                    resultsList.appendChild(li);
+                });
+            }
+            
+            resultsPlaceholder.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+        };
+        
+        const formatQuantity = (quantity) => {
+            return (quantity % 1 === 0) ? quantity.toString() : parseFloat(quantity.toFixed(2)).toString();
+        };
+
+        const showError = (message) => { errorMessage.textContent = message; };
+        const clearError = () => { errorMessage.textContent = ''; };
+        
+        const handleReset = () => {
+            form.reset();
+            clearError();
+            resultsContainer.classList.add('hidden');
+            resultsPlaceholder.classList.remove('hidden');
+            resultsList.innerHTML = '';
+            currentShoppingList = [];
+        };
+
+        // --- LÓGICA DE COMPARTIR ---
+        const generateTextList = () => {
+            if (currentShoppingList.length === 0) return null;
+            let listText = 'Lista de Compras para el Asado:\n\n';
+            currentShoppingList.forEach(item => {
+                listText += `- ${item.name}: ${formatQuantity(item.quantity)} ${item.unit}\n`;
+            });
+            return listText;
+        };
+
+        const handleShareList = async () => {
+            if (currentShoppingList.length === 0) {
+                alert("Primero calcula una lista para poder compartirla.");
+                return;
+            }
+
+            const listText = generateTextList();
+            if (!listText) return;
+
+            const originalButtonContent = shareButton.innerHTML;
+            shareButton.disabled = true;
+            shareButton.innerHTML = `<svg class="spinner" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle></svg><span>Compartiendo...</span>`;
+
+            try {
+                if (navigator.share) {
+                    await navigator.share({ title: 'Lista de Compras para el Asado', text: listText });
+                } else {
+                    await navigator.clipboard.writeText(listText);
+                    alert('¡Lista copiada al portapapeles!');
+                }
+            } catch (err) {
+                console.error("Error al compartir/copiar:", err);
+                // No mostrar alerta si el usuario cancela la acción de compartir
+                if (err.name !== 'AbortError') {
+                    alert('No se pudo compartir o copiar la lista.');
+                }
+            } finally {
+                shareButton.disabled = false;
+                shareButton.innerHTML = originalButtonContent;
+            }
+        };
+
+        // --- ASIGNACIÓN DE EVENT LISTENERS ---
+        [adultsInput, childrenInput, vegetariansInput, drinkingAdultsInput].forEach(input => {
+            input.addEventListener('input', recalculate);
+        });
+        resetButton.addEventListener('click', handleReset);
+        shareButton.addEventListener('click', handleShareList);
+
+        // --- INICIALIZACIÓN ---
+        recalculate();
+    </script>
+</body>
+</html>
