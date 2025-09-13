@@ -96,12 +96,15 @@
             color: var(--dark-gray);
         }
         
+        input[type="number"], input[type="checkbox"] {
+            font-size: 1rem;
+        }
+        
         input[type="number"] {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 1rem;
             box-sizing: border-box;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
@@ -110,6 +113,28 @@
             outline: none;
             border-color: var(--blue);
             box-shadow: 0 0 0 3px rgba(0, 51, 160, 0.2);
+        }
+
+        .protein-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background-color: var(--light-gray);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .protein-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .protein-option label {
+            margin-bottom: 0;
+            font-weight: 500;
         }
 
         .button-group {
@@ -282,24 +307,6 @@
             50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
             100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
         }
-        
-        /* Estilos de impresión */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printable-area, #printable-area * {
-                visibility: visible;
-            }
-            #printable-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 1rem;
-                box-sizing: border-box;
-            }
-        }
     </style>
 </head>
 <body>
@@ -320,7 +327,7 @@
                         <span>Número de Adultos</span>
                         <span class="tooltip-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
-                            <span class="tooltip-text">Carne: 300g, Pollo: 200g, Chorizo: 1.5, Vienesas: 1, Pan: 1, Bebidas: 500ml, Agua: 500ml</span>
+                            <span class="tooltip-text">Proteínas: 450g en total, divididas entre las opciones seleccionadas. Chorizo: 1.5, Vienesas: 1, Pan: 1, Bebidas: 500ml, Agua: 500ml</span>
                         </span>
                     </label>
                     <input type="number" id="adults" min="0" placeholder="Ej: 5">
@@ -331,10 +338,27 @@
                         <span>Número de Niños</span>
                          <span class="tooltip-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
-                            <span class="tooltip-text">Carne: 150g, Pollo: 125g, Chorizo: 1, Vienesas: 1, Pan: 1, Bebidas: 625ml, Agua: 750ml</span>
+                            <span class="tooltip-text">Proteínas: 225g en total, divididas entre las opciones seleccionadas. Chorizo: 1, Vienesas: 1, Pan: 1, Bebidas: 625ml, Agua: 750ml</span>
                         </span>
                     </label>
                     <input type="number" id="children" min="0" placeholder="Ej: 2">
+                </div>
+                 <div class="form-group">
+                    <label>Selecciona las Proteínas</label>
+                    <div class="protein-options">
+                        <div class="protein-option">
+                            <input type="checkbox" id="include-beef" checked>
+                            <label for="include-beef">Vacuno</label>
+                        </div>
+                        <div class="protein-option">
+                            <input type="checkbox" id="include-chicken" checked>
+                            <label for="include-chicken">Pollo</label>
+                        </div>
+                        <div class="protein-option">
+                            <input type="checkbox" id="include-pork" checked>
+                            <label for="include-pork">Cerdo</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -353,7 +377,7 @@
                         <span>¿Cuántos adultos beben?</span>
                          <span class="tooltip-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
-                            <span class="tooltip-text">Vino: 150ml, Cerveza: 3 latas de 355cc por persona.</span>
+                            <span class="tooltip-text">Vino: 1 botella (750cc) por cada 5 personas. Cerveza: 3 latas (355cc) por persona.</span>
                         </span>
                     </label>
                     <input type="number" id="drinking-adults" min="0" placeholder="Ej: 4">
@@ -393,8 +417,8 @@
     <script>
         // --- CONSTANTES DE PORCIONES ---
         const PORTIONS = {
-            adult: { beef: 300, chicken: 200, chorizo: 1.5, vienesa: 1, bread: 1, wine: 150, beer: 1065, soda: 500, water: 500 }, // beer: 3 * 355ml
-            child: { beef: 150, chicken: 125, chorizo: 1, vienesa: 1, bread: 1, soda: 625, water: 750 },
+            adult: { totalProtein: 450, chorizo: 1.5, vienesa: 1, bread: 1, wine: 150, beer: 1065, soda: 500, water: 500 },
+            child: { totalProtein: 225, chorizo: 1, vienesa: 1, bread: 1, soda: 625, water: 750 },
             veg: { burger: 2, sausage: 1.5 },
             group: { coal: 250 },
         };
@@ -405,6 +429,9 @@
         const childrenInput = document.getElementById('children');
         const vegetariansInput = document.getElementById('vegetarians');
         const drinkingAdultsInput = document.getElementById('drinking-adults');
+        const beefCheckbox = document.getElementById('include-beef');
+        const chickenCheckbox = document.getElementById('include-chicken');
+        const porkCheckbox = document.getElementById('include-pork');
         const errorMessage = document.getElementById('error-message');
         const resultsPlaceholder = document.getElementById('results-placeholder');
         const resultsContainer = document.getElementById('results-container');
@@ -423,6 +450,7 @@
                 case 'L':
                     return Math.ceil(quantity * 2) / 2; // Redondear hacia arriba al siguiente 0.5
                 case 'unidades':
+                case 'botellas':
                     return Math.ceil(quantity); // Redondear hacia arriba a la siguiente unidad entera
                 default:
                     return quantity;
@@ -461,28 +489,48 @@
             const vegFromChildren = Math.min(children, vegetarians - vegFromAdults);
             const meatEatingAdults = adults - vegFromAdults;
             const meatEatingChildren = children - vegFromChildren;
+            
+            // Lógica de proteínas
+            const proteinItems = [];
+            const selectedProteinsCount = [beefCheckbox, chickenCheckbox, porkCheckbox].filter(cb => cb.checked).length;
+            
+            if(selectedProteinsCount > 0) {
+                const proteinPerTypeAdult = PORTIONS.adult.totalProtein / selectedProteinsCount;
+                const proteinPerTypeChild = PORTIONS.child.totalProtein / selectedProteinsCount;
+
+                if (beefCheckbox.checked) {
+                    proteinItems.push({ name: 'Carne de Vacuno', quantity: getPracticalQuantity((meatEatingAdults * proteinPerTypeAdult + meatEatingChildren * proteinPerTypeChild) / 1000, 'kg'), unit: 'kg' });
+                }
+                if (chickenCheckbox.checked) {
+                    proteinItems.push({ name: 'Pollo', quantity: getPracticalQuantity((meatEatingAdults * proteinPerTypeAdult + meatEatingChildren * proteinPerTypeChild) / 1000, 'kg'), unit: 'kg' });
+                }
+                if (porkCheckbox.checked) {
+                    proteinItems.push({ name: 'Cerdo', quantity: getPracticalQuantity((meatEatingAdults * proteinPerTypeAdult + meatEatingChildren * proteinPerTypeChild) / 1000, 'kg'), unit: 'kg' });
+                }
+            }
+
 
             let coalKg = totalPeople * PORTIONS.group.coal / 1000;
             if (coalKg > 0) {
                 coalKg = Math.max(coalKg, 3);
             }
-
-            let wineL = drinkingAdults * PORTIONS.adult.wine / 1000;
-            if (wineL > 0) {
-                wineL = Math.max(wineL, 0.75); // Mínimo 750cc (1 botella)
+            
+            let wineBottles = 0;
+            if (drinkingAdults > 0) {
+                // 1 botella por cada 5 personas, mínimo 1
+                wineBottles = Math.ceil(drinkingAdults / 5);
             }
 
             const items = [
-                { name: 'Carne de Vacuno', quantity: getPracticalQuantity((meatEatingAdults * PORTIONS.adult.beef + meatEatingChildren * PORTIONS.child.beef) / 1000, 'kg'), unit: 'kg' },
-                { name: 'Pollo', quantity: getPracticalQuantity((meatEatingAdults * PORTIONS.adult.chicken + meatEatingChildren * PORTIONS.child.chicken) / 1000, 'kg'), unit: 'kg' },
+                ...proteinItems,
                 { name: 'Chorizos', quantity: getPracticalQuantity(meatEatingAdults * PORTIONS.adult.chorizo + meatEatingChildren * PORTIONS.child.chorizo, 'unidades'), unit: 'unidades' },
                 { name: 'Vienesas (para picar)', quantity: getPracticalQuantity(meatEatingAdults * PORTIONS.adult.vienesa + meatEatingChildren * PORTIONS.child.vienesa, 'unidades'), unit: 'unidades' },
                 { name: 'Hamburguesas Veg.', quantity: getPracticalQuantity(vegetarians * PORTIONS.veg.burger, 'unidades'), unit: 'unidades' },
                 { name: 'Chorizos Veg.', quantity: getPracticalQuantity(vegetarians * PORTIONS.veg.sausage, 'unidades'), unit: 'unidades' },
                 { name: 'Pan', quantity: getPracticalQuantity(totalPeople * PORTIONS.adult.bread, 'unidades'), unit: 'unidades' },
                 { name: 'Carbón', quantity: getPracticalQuantity(coalKg, 'kg'), unit: 'kg' },
-                { name: 'Vino', quantity: getPracticalQuantity(wineL, 'L'), unit: 'L' },
-                { name: 'Cerveza (latas 355cc)', quantity: getPracticalQuantity((drinkingAdults * PORTIONS.adult.beer) / 355, 'unidades'), unit: 'unidades' },
+                { name: 'Vino (botellas 750cc)', quantity: getPracticalQuantity(wineBottles, 'botellas'), unit: 'botellas' },
+                { name: 'Cerveza (latas 355cc)', quantity: getPracticalQuantity((drinkingAdults * 3), 'unidades'), unit: 'unidades' },
                 { name: 'Bebidas Gaseosas', quantity: getPracticalQuantity((adults * PORTIONS.adult.soda + children * PORTIONS.child.soda) / 1000, 'L'), unit: 'L' },
                 { name: 'Agua', quantity: getPracticalQuantity((adults * PORTIONS.adult.water + children * PORTIONS.child.water) / 1000, 'L'), unit: 'L' },
             ];
@@ -520,11 +568,10 @@
         
         const handleReset = () => {
             form.reset();
-            clearError();
-            resultsContainer.classList.add('hidden');
-            resultsPlaceholder.classList.remove('hidden');
-            resultsList.innerHTML = '';
-            currentShoppingList = [];
+            beefCheckbox.checked = true;
+            chickenCheckbox.checked = true;
+            porkCheckbox.checked = true;
+            recalculate();
         };
 
         // --- LÓGICA DE COMPARTIR ---
@@ -576,7 +623,6 @@
                 }
             } catch (err) {
                 console.error("Error al compartir/copiar:", err);
-                // No mostrar alerta si el usuario cancela la acción de compartir
                 if (err.name !== 'AbortError') {
                     alert('No se pudo compartir o copiar la lista.');
                 }
@@ -587,7 +633,7 @@
         };
 
         // --- ASIGNACIÓN DE EVENT LISTENERS ---
-        [adultsInput, childrenInput, vegetariansInput, drinkingAdultsInput].forEach(input => {
+        [adultsInput, childrenInput, vegetariansInput, drinkingAdultsInput, beefCheckbox, chickenCheckbox, porkCheckbox].forEach(input => {
             input.addEventListener('input', recalculate);
         });
         resetButton.addEventListener('click', handleReset);
