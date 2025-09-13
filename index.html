@@ -320,7 +320,7 @@
                         <span>Número de Adultos</span>
                         <span class="tooltip-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
-                            <span class="tooltip-text">Carne: 300g, Pollo: 200g, Chorizo: 1.5, Pan: 1, Bebidas: 500ml, Agua: 500ml</span>
+                            <span class="tooltip-text">Carne: 300g, Pollo: 200g, Chorizo: 1.5, Vienesas: 1, Pan: 1, Bebidas: 500ml, Agua: 500ml</span>
                         </span>
                     </label>
                     <input type="number" id="adults" min="0" placeholder="Ej: 5">
@@ -331,7 +331,7 @@
                         <span>Número de Niños</span>
                          <span class="tooltip-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.055.492.115.556.124.062.01.142.02.257.022.115.002.214-.01.304-.03s.174-.05.246-.088.139-.086.195-.15.105-.14.146-.242.076-.23.076-.385c0-.135-.014-.24-.04-.322-.027-.082-.066-.156-.117-.218s-.112-.113-.185-.153-.156-.071-.247-.092c-.09-.022-.19-.033-.302-.033s-.223.008-.346.023L5.05 6.464a.303.303 0 0 0-.214.282V8.16c0 .149.074.285.19.357l1.618.729c.21.094.464.14.74.14.225 0 .44-.04.64-.118s.37-.175.52-.308.26-.29.35-.48.13-.41.13-.66c0-.205-.034-.38-.102-.524-.068-.144-.158-.266-.27-.368s-.24-.182-.38-.242c-.14-.06-.31-.098-.51-.114zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
-                            <span class="tooltip-text">Carne: 150g, Pollo: 125g, Chorizo: 1, Pan: 1, Bebidas: 625ml, Agua: 750ml</span>
+                            <span class="tooltip-text">Carne: 150g, Pollo: 125g, Chorizo: 1, Vienesas: 1, Pan: 1, Bebidas: 625ml, Agua: 750ml</span>
                         </span>
                     </label>
                     <input type="number" id="children" min="0" placeholder="Ej: 2">
@@ -393,8 +393,8 @@
     <script>
         // --- CONSTANTES DE PORCIONES ---
         const PORTIONS = {
-            adult: { beef: 300, chicken: 200, chorizo: 1.5, bread: 1, wine: 150, beer: 1065, soda: 500, water: 500 }, // beer: 3 * 355ml
-            child: { beef: 150, chicken: 125, chorizo: 1, bread: 1, soda: 625, water: 750 },
+            adult: { beef: 300, chicken: 200, chorizo: 1.5, vienesa: 1, bread: 1, wine: 150, beer: 1065, soda: 500, water: 500 }, // beer: 3 * 355ml
+            child: { beef: 150, chicken: 125, chorizo: 1, vienesa: 1, bread: 1, soda: 625, water: 750 },
             veg: { burger: 2, sausage: 1.5 },
             group: { coal: 250 },
         };
@@ -476,6 +476,7 @@
                 { name: 'Carne de Vacuno', quantity: getPracticalQuantity((meatEatingAdults * PORTIONS.adult.beef + meatEatingChildren * PORTIONS.child.beef) / 1000, 'kg'), unit: 'kg' },
                 { name: 'Pollo', quantity: getPracticalQuantity((meatEatingAdults * PORTIONS.adult.chicken + meatEatingChildren * PORTIONS.child.chicken) / 1000, 'kg'), unit: 'kg' },
                 { name: 'Chorizos', quantity: getPracticalQuantity(meatEatingAdults * PORTIONS.adult.chorizo + meatEatingChildren * PORTIONS.child.chorizo, 'unidades'), unit: 'unidades' },
+                { name: 'Vienesas (para picar)', quantity: getPracticalQuantity(meatEatingAdults * PORTIONS.adult.vienesa + meatEatingChildren * PORTIONS.child.vienesa, 'unidades'), unit: 'unidades' },
                 { name: 'Hamburguesas Veg.', quantity: getPracticalQuantity(vegetarians * PORTIONS.veg.burger, 'unidades'), unit: 'unidades' },
                 { name: 'Chorizos Veg.', quantity: getPracticalQuantity(vegetarians * PORTIONS.veg.sausage, 'unidades'), unit: 'unidades' },
                 { name: 'Pan', quantity: getPracticalQuantity(totalPeople * PORTIONS.adult.bread, 'unidades'), unit: 'unidades' },
@@ -529,7 +530,24 @@
         // --- LÓGICA DE COMPARTIR ---
         const generateTextList = () => {
             if (currentShoppingList.length === 0) return null;
-            let listText = 'Lista de Compras para el Asado:\n\n';
+
+            const adults = parseInt(adultsInput.value, 10) || 0;
+            const children = parseInt(childrenInput.value, 10) || 0;
+
+            let guestInfoParts = [];
+            if (adults > 0) {
+                guestInfoParts.push(`${adults} adulto${adults !== 1 ? 's' : ''}`);
+            }
+            if (children > 0) {
+                guestInfoParts.push(`${children} niño${children !== 1 ? 's' : ''}`);
+            }
+
+            let listText = 'Lista de Compras para el Asado:\n';
+            if (guestInfoParts.length > 0) {
+                listText += `(Para ${guestInfoParts.join(' y ')})\n`;
+            }
+            listText += '\n';
+
             currentShoppingList.forEach(item => {
                 listText += `- ${item.name}: ${formatQuantity(item.quantity)} ${item.unit}\n`;
             });
